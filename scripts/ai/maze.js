@@ -170,6 +170,24 @@ function()
         return list.splice(closestIndex, 1)[0];
     }
 
+    function getBestNode(list, endCoord, shape)
+    {
+        var bestIndex = 0;
+        var bestValue = list[0].cost + getNodeDistance(flattenToCoord(list[0].flatten, shape), endCoord);
+        for (var i = 0; i < list.length; ++i)
+        {
+            var distance = list[i].cost + getNodeDistance(flattenToCoord(list[i].flatten, shape), endCoord);
+
+            if (distance < bestValue)
+            {
+                bestIndex = i;
+                bestValue = distance;
+            }
+        }
+
+        return list.splice(bestIndex, 1)[0];
+    }
+
     function getNodeDistance(startCoord, endCoord)
     {
         var distanceSq = 0;
@@ -292,6 +310,7 @@ function()
         getNodeStack: getNodeStack,
         getSmallestNode: getSmallestNode,
         getClosestNode: getClosestNode,
+        getBestNode: getBestNode,
         printNodeList: printNodeList,
         generateMaze: generateMaze,
         getOperations: getOperations,

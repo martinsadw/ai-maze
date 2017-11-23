@@ -51,6 +51,8 @@ function(ai, glInfo)
         console.log(results);
         results = ai.mazeGreedySearch(maze, startPosition, endPosition);
         console.log(results);
+        results = ai.mazeAStar(maze, startPosition, endPosition);
+        console.log(results);
 
         function drawScene(newTime)
         {
