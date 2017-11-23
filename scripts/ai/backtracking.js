@@ -20,8 +20,6 @@ function(mazeLib)
 
     function mazeBacktrackingRecursion(maze, currentNode, endPosition, stack, results)
     {
-        // d();
-
         if (results.find)
             return;
 

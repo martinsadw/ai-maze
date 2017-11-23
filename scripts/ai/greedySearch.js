@@ -1,7 +1,7 @@
 define(["ai/maze"],
 function(mazeLib)
 {
-    function mazeOrderedSearch(maze, startPosition, endPosition)
+    function mazeGreedySearch(maze, startPosition, endPosition)
     {
         var results = new mazeLib.Statistics();
         var startTime = new Date();
@@ -15,7 +15,9 @@ function(mazeLib)
         {
             // TODO(andre:2017-11-23): This solution iterates over the entire list.
             // Keeping it ordered would be better
-            var currentPosition = mazeLib.getSmallestNode(open);
+            // Maybe even precalculate the distance to end position since it
+            // doesn't change over iterations
+            var currentPosition = mazeLib.getClosestNode(open, endPosition, maze.shape);
             closed.push(currentPosition);
 
             if (currentPosition.flatten == endFlatten)
@@ -44,8 +46,6 @@ function(mazeLib)
 
                 var operationCost = 1;
 
-                // TODO(andre:2017-11-23): If it's already in the open list MUST check if
-                // this path is better (cost less)
                 if (!closedIndex && !openIndex) // Checks if the position isn't in one of the lists
                 {
                     results._numberOfBranchs++;
@@ -59,5 +59,5 @@ function(mazeLib)
         return results;
     }
 
-    return mazeOrderedSearch;
+    return mazeGreedySearch;
 });

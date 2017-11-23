@@ -113,6 +113,8 @@ function()
 
     function MazeNode(flatten, parent, cost)
     {
+        // TODO(andre:2017-11-23): Conversion between flatten and coord is a loop over all the
+        // dimensions. Maybe the MazeNode should save both
         this.flatten = flatten;
         this.parent = parent;
         this.cost = cost;
@@ -148,6 +150,36 @@ function()
         }
 
         return list.splice(smallestIndex, 1)[0];
+    }
+
+    function getClosestNode(list, endCoord, shape)
+    {
+        var closestIndex = 0;
+        var closestValue = getNodeDistance(flattenToCoord(list[0].flatten, shape), endCoord);
+        for (var i = 0; i < list.length; ++i)
+        {
+            var distance = getNodeDistance(flattenToCoord(list[i].flatten, shape), endCoord);
+
+            if (distance < closestValue)
+            {
+                closestIndex = i;
+                closestValue = distance;
+            }
+        }
+
+        return list.splice(closestIndex, 1)[0];
+    }
+
+    function getNodeDistance(startCoord, endCoord)
+    {
+        var distanceSq = 0;
+        for (var i = 0; i < startCoord.length; ++i)
+        {
+            var delta = endCoord[i] - startCoord[i];
+            distanceSq += delta * delta;
+        }
+
+        return Math.sqrt(distanceSq);
     }
 
     function printNodeList(list, shape)
@@ -259,6 +291,7 @@ function()
         MazeNode: MazeNode,
         getNodeStack: getNodeStack,
         getSmallestNode: getSmallestNode,
+        getClosestNode: getClosestNode,
         printNodeList: printNodeList,
         generateMaze: generateMaze,
         getOperations: getOperations,
