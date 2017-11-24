@@ -38,17 +38,15 @@ function(mazeLib)
 
             for (var i = 0; i < operations.length; ++i)
             {
-                var flatten = mazeLib.coordToFlatten(operations[i], maze.shape);
+                var flatten = mazeLib.coordToFlatten(operations[i].coord, maze.shape);
 
                 var closedIndex = closed.find(node => node.flatten == flatten);
                 var openIndex = open.find(node => node.flatten == flatten);
 
-                var operationCost = 1;
-
                 if (!closedIndex && !openIndex) // Checks if the position isn't in one of the lists
                 {
                     results._numberOfBranchs++;
-                    open.push(new mazeLib.MazeNode(flatten, (closed.length-1), currentPosition.cost + operationCost));
+                    open.push(new mazeLib.MazeNode(flatten, (closed.length-1), currentPosition.cost + operations[i].cost));
                 }
             }
         }

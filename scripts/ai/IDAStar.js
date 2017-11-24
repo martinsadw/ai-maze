@@ -46,18 +46,17 @@ function(mazeLib)
                 }
 
                 var operation = currentRecursion.operations[currentRecursion.curOperation];
-                var flatten = mazeLib.coordToFlatten(operation, maze.shape);
+                var flatten = mazeLib.coordToFlatten(operation.coord, maze.shape);
                 var stackIndex = stack.find(recursion => recursion.mazeNode.flatten == flatten);
 
-                var operationCost = mazeLib.getNodeDistance(mazeLib.flattenToCoord(currentRecursion.mazeNode.flatten, maze.shape),
-                                                            operation);
+                var operationCost = operation.cost;
 
                 currentRecursion.curOperation++;
                 if (!stackIndex) // Checks if the position isn't in the recursion stack
                 {
                     results._numberOfBranchs++;
 
-                    var heuristic = currentRecursion.mazeNode.cost + operationCost + mazeLib.getNodeDistance(operation, endPosition);
+                    var heuristic = currentRecursion.mazeNode.cost + operationCost + mazeLib.getNodeDistance(operation.coord, endPosition);
 
                     if (heuristic <= threshold)
                     {

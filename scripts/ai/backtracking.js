@@ -40,17 +40,15 @@ function(mazeLib)
             }
 
             var operation = currentRecursion.operations[currentRecursion.curOperation];
-            var flatten = mazeLib.coordToFlatten(operation, maze.shape);
+            var flatten = mazeLib.coordToFlatten(operation.coord, maze.shape);
             var stackIndex = stack.find(recursion => recursion.mazeNode.flatten == flatten);
-
-            var operationCost = 1;
 
             currentRecursion.curOperation++;
             if (!stackIndex) // Checks if the position isn't in the recursion stack
             {
                 results._numberOfBranchs++;
 
-                var nextNode = new mazeLib.MazeNode(flatten, stack.length-1, currentRecursion.mazeNode.cost + operationCost);
+                var nextNode = new mazeLib.MazeNode(flatten, stack.length-1, currentRecursion.mazeNode.cost + operation.cost);
                 stack.push(currentRecursion);
                 currentRecursion = new mazeLib.RecursionNode(maze, nextNode);
             }

@@ -111,6 +111,12 @@ function()
         this.find = false;
     }
 
+    function Operation(coord, cost)
+    {
+        this.coord = coord;
+        this.cost = cost;
+    }
+
     function RecursionNode(maze, mazeNode)
     {
         this.mazeNode = mazeNode;
@@ -334,7 +340,8 @@ function()
                 similarity < ndim &&
                 maze.get.apply(maze, singleOperation) != 1) // Check if the position is a wall
             {
-                operations.push(singleOperation);
+                var distance = getNodeDistance(position, singleOperation);
+                operations.push(new Operation(singleOperation, distance));
             }
         }
 
@@ -373,6 +380,7 @@ function()
 
     return {
         Statistics: Statistics,
+        Operation: Operation,
         RecursionNode: RecursionNode,
         getRecursionMazeNodeList: getRecursionMazeNodeList,
         MazeNode: MazeNode,
