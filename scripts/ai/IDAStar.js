@@ -1,9 +1,7 @@
 define(["ai/maze"],
 function(mazeLib)
 {
-    // 2849595 ms
-    // 47 minutes
-    function mazeBacktracking(maze, startPosition, endPosition)
+    function mazeIDAStar(maze, startPosition, endPosition)
     {
         var results = new mazeLib.Statistics();
         var startTime = new Date();
@@ -61,5 +59,5 @@ function(mazeLib)
         return results;
     }
 
-    return mazeBacktracking;
+    return mazeIDAStar;
 });

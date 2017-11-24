@@ -1,5 +1,5 @@
-define(["ai/maze", "ai/backtracking", "ai/breadthSearch", "ai/depthSearch", "ai/orderedSearch", "ai/greedySearch", "ai/AStar"],
-function(mazeLib, mazeBacktracking, mazeBreadthSearch, mazeDepthSearch, mazeOrderedSearch, mazeGreedySearch, mazeAStar)
+define(["ai/maze", "ai/backtracking", "ai/breadthSearch", "ai/depthSearch", "ai/orderedSearch", "ai/greedySearch", "ai/AStar", "ai/IDAStar"],
+function(mazeLib, mazeBacktracking, mazeBreadthSearch, mazeDepthSearch, mazeOrderedSearch, mazeGreedySearch, mazeAStar, mazeIDAStar)
 {
     // var stopExecution = 10000;
     // function d()
@@ -8,17 +8,6 @@ function(mazeLib, mazeBacktracking, mazeBreadthSearch, mazeDepthSearch, mazeOrde
     //     if (stopExecution < 0)
     //         throw new Error("Hello!");
     // }
-
-    function mazeIDAStar(maze, startPosition, endPosition)
-    {
-        var results = new mazeLib.Statistics();
-        var startTime = new Date();
-
-        var timeDiff = new Date() - startTime;
-
-        results.executionTime = timeDiff;
-        return results;
-    }
 
     return {
         generateMaze: mazeLib.generateMaze,

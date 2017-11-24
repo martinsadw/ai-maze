@@ -111,6 +111,24 @@ function()
         this.find = false;
     }
 
+    function RecursionNode(maze, mazeNode)
+    {
+        this.mazeNode = mazeNode;
+        this.operations = getOperations(maze, flattenToCoord(mazeNode.flatten, maze.shape));
+        this.curOperation = 0;
+    }
+
+    function getRecursionMazeNodeList(recursionStack)
+    {
+        var stack = [];
+        for (var i = 0; i < recursionStack.length; ++i)
+        {
+            stack.push(recursionStack[i].mazeNode);
+        }
+
+        return stack;
+    }
+
     function MazeNode(flatten, parent, cost)
     {
         // TODO(andre:2017-11-23): Conversion between flatten and coord is a loop over all the
@@ -306,6 +324,8 @@ function()
 
     return {
         Statistics: Statistics,
+        RecursionNode: RecursionNode,
+        getRecursionMazeNodeList: getRecursionMazeNodeList,
         MazeNode: MazeNode,
         getNodeStack: getNodeStack,
         getSmallestNode: getSmallestNode,
