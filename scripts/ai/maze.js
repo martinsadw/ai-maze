@@ -234,10 +234,59 @@ function()
         // maze.slice([1, -1], [1, -1], [1, -1]).assign(0, false);
         var maze = nj.zeros(mazeDimensions, 'int8');
 
+        var type = 1;
+
         maze.set(3, 3, 1);
         maze.set(3, 4, 1);
         maze.set(4, 3, 1);
         maze.set(4, 4, 1);
+
+        if (type > 0)
+        {
+            maze.set(4, 2, 1);
+            maze.set(4, 1, 1);
+            maze.set(4, 0, 1);
+            maze.set(0, 1, 1);
+            maze.set(1, 1, 1);
+            maze.set(2, 1, 1);
+            maze.set(2, 4, 1);
+            maze.set(1, 4, 1);
+            maze.set(1, 5, 1);
+            maze.set(1, 6, 1);
+            maze.set(3, 7, 1);
+            maze.set(3, 6, 1);
+        }
+
+        if (type > 1)
+        {
+            maze.set(6, 7, 1);
+            maze.set(6, 6, 1);
+            maze.set(6, 5, 1);
+            maze.set(6, 4, 1);
+            maze.set(6, 3, 1);
+            maze.set(6, 2, 1);
+            maze.set(6, 1, 1);
+        }
+
+        if (type > 2)
+        {
+            maze.set(3, 0, 1);
+            maze.set(5, 0, 1);
+            maze.set(7, 0, 1);
+            maze.set(0, 2, 1);
+            maze.set(1, 2, 1);
+            maze.set(3, 2, 1);
+            maze.set(0, 3, 1);
+            maze.set(2, 3, 1);
+            maze.set(2, 5, 1);
+            maze.set(5, 5, 1);
+            maze.set(0, 7, 1);
+            maze.set(2, 7, 1);
+            maze.set(4, 6, 1);
+            maze.set(5, 6, 1);
+            maze.set(4, 7, 1);
+            maze.set(5, 7, 1);
+        }
 
         var timeDiff = new Date() - startTime;
         console.log("Maze shape: (" + maze.shape + ")");
@@ -331,6 +380,7 @@ function()
         getSmallestNode: getSmallestNode,
         getClosestNode: getClosestNode,
         getBestNode: getBestNode,
+        getNodeDistance: getNodeDistance,
         printNodeList: printNodeList,
         generateMaze: generateMaze,
         getOperations: getOperations,
