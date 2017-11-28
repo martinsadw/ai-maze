@@ -56,5 +56,97 @@ function(mazeLib)
         return results;
     }
 
-    return mazeBreadthSearch;
+    function* mazeBreadthSearchIt(maze, startPosition, endPosition)
+    {
+        if (maze.ndim !== 2)
+        {
+            console.error("Not supported yet!");
+            return;
+        }
+
+        var results = new mazeLib.Statistics();
+        var startTime = new Date();
+
+        results.map = [];
+        var shape = maze.shape;
+        for (var i = 0; i < shape[0]; ++i)
+        {
+            results.map[i] = [];
+
+            for (var j = 0; j < shape[1]; ++j)
+            {
+                results.map[i][j] = {
+                    x: i,
+                    y: j,
+                    id: maze.get(i, j),
+                    cost: 0,
+                    heuristic: 0,
+                    // cost: 10.24,
+                    // heuristic: 15.65,
+                };
+            }
+        }
+        results.map[startPosition[0]][startPosition[1]].id = 2;
+        results.map[endPosition[0]][endPosition[1]].id = 3;
+
+        results.path = [];
+
+        var open = [new mazeLib.MazeNode(mazeLib.coordToFlatten(startPosition, maze.shape), null, 0)];
+        var closed = [];
+
+        var endFlatten = mazeLib.coordToFlatten(endPosition, maze.shape);
+
+        while (open.length > 0)
+        {
+            // TODO(andre:2017-11-22): Shift is O(n). Find a better way to work with queues
+            // https://stackoverflow.com/questions/1590247/how-do-you-implement-a-stack-and-a-queue-in-javascript
+            // https://code.tutsplus.com/articles/data-structures-with-javascript-stack-and-queue--cms-23348
+            var currentPosition = open.shift();
+            closed.push(currentPosition);
+
+            var currentPositionCoord = mazeLib.flattenToCoord(currentPosition.flatten, maze.shape);
+            results.map[currentPositionCoord[0]][currentPositionCoord[1]].id = 6;
+
+            results.path = mazeLib.getNodeStackData(closed, closed.length-1, maze.shape);
+            results.depth = results.path.length;
+
+            results.expandedNodes = closed.length;
+            results.visitedNodes = closed.length + open.length;
+
+            results.averageBranchingFactor = results._numberOfBranchs / results.expandedNodes;
+
+            results.cost = currentPosition.cost;
+
+            yield results;
+
+            if (currentPosition.flatten == endFlatten)
+            {
+                results.find = true;
+                break;
+            }
+
+            var operations = mazeLib.getOperations(maze, mazeLib.flattenToCoord(currentPosition.flatten, maze.shape));
+
+            for (var i = 0; i < operations.length; ++i)
+            {
+                var flatten = mazeLib.coordToFlatten(operations[i].coord, maze.shape);
+
+                var closedIndex = closed.find(node => node.flatten == flatten);
+                var openIndex = open.find(node => node.flatten == flatten);
+
+                if (!closedIndex && !openIndex) // Checks if the position isn't in one of the lists
+                {
+                    results._numberOfBranchs++;
+                    results.map[operations[i].coord[0]][operations[i].coord[1]].id = 5;
+                    open.push(new mazeLib.MazeNode(flatten, (closed.length-1), currentPosition.cost + operations[i].cost));
+                }
+            }
+        }
+
+        var timeDiff = new Date() - startTime;
+        results.executionTime = timeDiff;
+        return results;
+    }
+
+    return mazeBreadthSearchIt;
 });

@@ -160,6 +160,32 @@ function()
         return stack;
     }
 
+    function getNodeStackData(list, index, shape)
+    {
+        var currentNode = list[index];
+        var coord = flattenToCoord(currentNode.flatten, shape);
+        var stack = [{
+            x: coord[0],
+            y: coord[1],
+            id: 4,
+        }];
+
+        while (currentNode.parent != null)
+        {
+            currentNode = list[currentNode.parent];
+            var coord = flattenToCoord(currentNode.flatten, shape);
+            stack.push({
+                x: coord[0],
+                y: coord[1],
+                id: 4,
+            });
+        }
+
+        stack.reverse();
+
+        return stack;
+    }
+
     function getSmallestNode(list)
     {
         var smallestIndex = 0;
@@ -385,6 +411,7 @@ function()
         getRecursionMazeNodeList: getRecursionMazeNodeList,
         MazeNode: MazeNode,
         getNodeStack: getNodeStack,
+        getNodeStackData: getNodeStackData,
         getSmallestNode: getSmallestNode,
         getClosestNode: getClosestNode,
         getBestNode: getBestNode,
