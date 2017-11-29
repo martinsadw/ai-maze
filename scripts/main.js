@@ -120,7 +120,7 @@ function(ai)
                 .attr("width", "510px")
                 .attr("height", "510px");
 
-            var iterator = ai.mazeBreadthSearch(maze, startPosition, endPosition);
+            var iterator = ai.mazeBreadthSearchIt(maze, startPosition, endPosition);
 
             (function MazeIterate()
             {
@@ -162,8 +162,32 @@ function(ai)
                     .style("stroke", "#777")
                     .style("stroke-width", dimX * borderFactor)
 
+                path.selectAll()
+                    .data(results.startPosition)
+                    .enter().append("rect")
+                    .attr("class", "square")
+                    .attr("x", function(d) { return d.x * (dimX + padX) + 0.5; })
+                    .attr("y", function(d) { return d.y * (dimY + padY) + 0.5; })
+                    .attr("width", function(d) { return dimX; })
+                    .attr("height", function(d) { return dimY; })
+                    .style("fill", getFillColor)
+                    .style("stroke", "#777")
+                    .style("stroke-width", dimX * borderFactor)
+
+                path.selectAll()
+                    .data(results.endPosition)
+                    .enter().append("rect")
+                    .attr("class", "square")
+                    .attr("x", function(d) { return d.x * (dimX + padX) + 0.5; })
+                    .attr("y", function(d) { return d.y * (dimY + padY) + 0.5; })
+                    .attr("width", function(d) { return dimX; })
+                    .attr("height", function(d) { return dimY; })
+                    .style("fill", getFillColor)
+                    .style("stroke", "#777")
+                    .style("stroke-width", dimX * borderFactor)
+
                 if (!resultsIt.done)
-                    setTimeout(MazeIterate, 100);
+                    setTimeout(MazeIterate, 150);
             })();
 
             // row.selectAll(".textA")

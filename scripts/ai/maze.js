@@ -163,23 +163,26 @@ function()
     function getNodeStackData(list, index, shape)
     {
         var currentNode = list[index];
-        var coord = flattenToCoord(currentNode.flatten, shape);
-        var stack = [{
-            x: coord[0],
-            y: coord[1],
-            id: 4,
-        }];
+        var stack = [];
 
         while (currentNode.parent != null)
         {
-            currentNode = list[currentNode.parent];
             var coord = flattenToCoord(currentNode.flatten, shape);
             stack.push({
                 x: coord[0],
                 y: coord[1],
                 id: 4,
             });
+
+            currentNode = list[currentNode.parent];
         }
+
+        var coord = flattenToCoord(currentNode.flatten, shape);
+        stack.push({
+            x: coord[0],
+            y: coord[1],
+            id: 4,
+        });
 
         stack.reverse();
 
@@ -404,6 +407,16 @@ function()
         return pos;
     }
 
+    function setMazeId(maze, position, id)
+    {
+        var curId = maze[position[0]][position[1]].id;
+
+        // if (curId !== 2 && curId !== 3)
+        {
+            maze[position[0]][position[1]].id = id;
+        }
+    }
+
     return {
         Statistics: Statistics,
         Operation: Operation,
@@ -421,5 +434,6 @@ function()
         getOperations: getOperations,
         flattenToCoord: flattenToCoord,
         coordToFlatten: coordToFlatten,
+        setMazeId: setMazeId,
     }
 });

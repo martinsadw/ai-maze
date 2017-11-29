@@ -88,6 +88,16 @@ function(mazeLib)
         }
         results.map[startPosition[0]][startPosition[1]].id = 2;
         results.map[endPosition[0]][endPosition[1]].id = 3;
+        results.startPosition = [{
+            x: startPosition[0],
+            y: startPosition[1],
+            id: 2,
+        }]
+        results.endPosition = [{
+            x: endPosition[0],
+            y: endPosition[1],
+            id: 3,
+        }]
 
         results.path = [];
 
@@ -105,7 +115,7 @@ function(mazeLib)
             closed.push(currentPosition);
 
             var currentPositionCoord = mazeLib.flattenToCoord(currentPosition.flatten, maze.shape);
-            results.map[currentPositionCoord[0]][currentPositionCoord[1]].id = 6;
+            mazeLib.setMazeId(results.map, currentPositionCoord, 6);
 
             results.path = mazeLib.getNodeStackData(closed, closed.length-1, maze.shape);
             results.depth = results.path.length;
@@ -117,13 +127,13 @@ function(mazeLib)
 
             results.cost = currentPosition.cost;
 
-            yield results;
-
             if (currentPosition.flatten == endFlatten)
             {
                 results.find = true;
                 break;
             }
+
+            yield results;
 
             var operations = mazeLib.getOperations(maze, mazeLib.flattenToCoord(currentPosition.flatten, maze.shape));
 
@@ -137,7 +147,7 @@ function(mazeLib)
                 if (!closedIndex && !openIndex) // Checks if the position isn't in one of the lists
                 {
                     results._numberOfBranchs++;
-                    results.map[operations[i].coord[0]][operations[i].coord[1]].id = 5;
+                    mazeLib.setMazeId(results.map, operations[i].coord, 5);
                     open.push(new mazeLib.MazeNode(flatten, (closed.length-1), currentPosition.cost + operations[i].cost));
                 }
             }
@@ -148,5 +158,8 @@ function(mazeLib)
         return results;
     }
 
-    return mazeBreadthSearchIt;
+    return {
+        mazeBreadthSearch: mazeBreadthSearch,
+        mazeBreadthSearchIt: mazeBreadthSearchIt,
+    }
 });
