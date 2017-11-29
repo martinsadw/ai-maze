@@ -120,7 +120,7 @@ function(ai)
                 .attr("width", "510px")
                 .attr("height", "510px");
 
-            var iterator = ai.mazeBreadthSearchIt(maze, startPosition, endPosition);
+            var iterator = ai.mazeBacktrackingIt(maze, startPosition, endPosition);
 
             (function MazeIterate()
             {

@@ -1,5 +1,5 @@
 define(["ai/maze", "ai/backtracking", "ai/breadthSearch", "ai/depthSearch", "ai/orderedSearch", "ai/greedySearch", "ai/AStar", "ai/IDAStar"],
-function(mazeLib, mazeBacktracking, breadthSearch, mazeDepthSearch, mazeOrderedSearch, mazeGreedySearch, mazeAStar, mazeIDAStar)
+function(mazeLib, backtracking, breadthSearch, mazeDepthSearch, mazeOrderedSearch, mazeGreedySearch, mazeAStar, mazeIDAStar)
 {
     // var stopExecution = 10000;
     // function d()
@@ -11,7 +11,8 @@ function(mazeLib, mazeBacktracking, breadthSearch, mazeDepthSearch, mazeOrderedS
 
     return {
         generateMaze: mazeLib.generateMaze,
-        mazeBacktracking: mazeBacktracking,
+        mazeBacktracking: backtracking.mazeBacktracking,
+        mazeBacktrackingIt: backtracking.mazeBacktrackingIt,
         mazeBreadthSearch: breadthSearch.mazeBreadthSearch,
         mazeBreadthSearchIt: breadthSearch.mazeBreadthSearchIt,
         mazeDepthSearch: mazeDepthSearch,
