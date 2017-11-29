@@ -81,8 +81,6 @@ function(mazeLib)
                     id: maze.get(i, j),
                     cost: 0,
                     heuristic: 0,
-                    // cost: 10.24,
-                    // heuristic: 15.65,
                 };
             }
         }
@@ -92,12 +90,12 @@ function(mazeLib)
             x: startPosition[0],
             y: startPosition[1],
             id: 2,
-        }]
+        }];
         results.endPosition = [{
             x: endPosition[0],
             y: endPosition[1],
             id: 3,
-        }]
+        }];
 
         results.path = [];
 

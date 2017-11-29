@@ -97,12 +97,12 @@ function(mazeLib)
             x: startPosition[0],
             y: startPosition[1],
             id: 2,
-        }]
+        }];
         results.endPosition = [{
             x: endPosition[0],
             y: endPosition[1],
             id: 3,
-        }]
+        }];
 
         results.path = [];
 
