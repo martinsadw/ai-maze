@@ -124,7 +124,6 @@ function(mazeLib)
 
             results.averageBranchingFactor = results._numberOfBranchs / results.expandedNodes;
 
-
             if (currentPosition.flatten == endFlatten)
             {
                 results.find = true;
