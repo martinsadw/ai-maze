@@ -120,7 +120,7 @@ function(ai)
                 .attr("width", "510px")
                 .attr("height", "510px");
 
-            var iterator = ai.mazeAStarIt(maze, startPosition, endPosition);
+            var iterator = ai.mazeIDAStarIt(maze, startPosition, endPosition);
 
             (function MazeIterate()
             {
@@ -187,7 +187,7 @@ function(ai)
                     .style("stroke-width", dimX * borderFactor)
 
                 if (!resultsIt.done)
-                    setTimeout(MazeIterate, 150);
+                    setTimeout(MazeIterate, 1);
             })();
 
             // row.selectAll(".textA")

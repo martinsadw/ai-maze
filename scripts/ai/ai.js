@@ -1,5 +1,5 @@
 define(["ai/maze", "ai/backtracking", "ai/breadthSearch", "ai/depthSearch", "ai/orderedSearch", "ai/greedySearch", "ai/AStar", "ai/IDAStar"],
-function(mazeLib, backtracking, breadthSearch, depthSearch, orderedSearch, greedySearch, aStar, mazeIDAStar)
+function(mazeLib, backtracking, breadthSearch, depthSearch, orderedSearch, greedySearch, aStar, idaStar)
 {
     // var stopExecution = 10000;
     // function d()
@@ -23,7 +23,8 @@ function(mazeLib, backtracking, breadthSearch, depthSearch, orderedSearch, greed
         mazeGreedySearchIt: greedySearch.mazeGreedySearchIt,
         mazeAStar: aStar.mazeAStar,
         mazeAStarIt: aStar.mazeAStarIt,
-        mazeIDAStar: mazeIDAStar,
+        mazeIDAStar: idaStar.mazeIDAStar,
+        mazeIDAStarIt: idaStar.mazeIDAStarIt,
         coordToFlatten: mazeLib.coordToFlatten,
         flattenToCoord: mazeLib.flattenToCoord,
     };

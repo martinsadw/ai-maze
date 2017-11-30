@@ -70,10 +70,6 @@ function(mazeLib)
         var results = new mazeLib.Statistics();
         var startTime = new Date();
 
-        var startNode = new mazeLib.MazeNode(mazeLib.coordToFlatten(startPosition, maze.shape), null, 0);
-        var stack = [];
-        var currentRecursion = new mazeLib.RecursionNode(maze, startNode);
-
         results.map = [];
         var shape = maze.shape;
         for (var i = 0; i < shape[0]; ++i)
@@ -105,6 +101,10 @@ function(mazeLib)
         }];
 
         results.path = [];
+
+        var startNode = new mazeLib.MazeNode(mazeLib.coordToFlatten(startPosition, maze.shape), null, 0);
+        var stack = [];
+        var currentRecursion = new mazeLib.RecursionNode(maze, startNode);
 
         var endFlatten = mazeLib.coordToFlatten(endPosition, maze.shape);
 
