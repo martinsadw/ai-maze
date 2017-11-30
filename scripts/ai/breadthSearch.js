@@ -117,13 +117,13 @@ function(mazeLib)
 
             results.path = mazeLib.getNodeStackData(closed, closed.length-1, maze.shape);
             results.depth = results.path.length;
+            results.cost = currentPosition.cost;
 
             results.expandedNodes = closed.length;
             results.visitedNodes = closed.length + open.length;
 
             results.averageBranchingFactor = results._numberOfBranchs / results.expandedNodes;
 
-            results.cost = currentPosition.cost;
 
             if (currentPosition.flatten == endFlatten)
             {

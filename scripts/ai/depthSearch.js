@@ -56,6 +56,12 @@ function(mazeLib)
 
     function* mazeDepthSearchIt(maze, startPosition, endPosition)
     {
+        if (maze.ndim !== 2)
+        {
+            console.error("Not supported yet!");
+            return;
+        }
+
         var results = new mazeLib.Statistics();
         var startTime = new Date();
 
