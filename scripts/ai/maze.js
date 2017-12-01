@@ -261,75 +261,6 @@ function()
         }
     }
 
-    function generateMaze(mazeDimensions)
-    {
-        var startTime = new Date();
-
-        // var maze = nj.ones(mazeDimensions, 'int8');
-        // maze.slice([1, -1], [1, -1], [1, -1]).assign(0, false);
-        var maze = nj.zeros(mazeDimensions, 'int8');
-
-        var type = 1;
-
-        maze.set(3, 3, 1);
-        maze.set(3, 4, 1);
-        maze.set(4, 3, 1);
-        maze.set(4, 4, 1);
-
-        if (type > 0)
-        {
-            maze.set(4, 2, 1);
-            maze.set(4, 1, 1);
-            maze.set(4, 0, 1);
-            maze.set(0, 1, 1);
-            maze.set(1, 1, 1);
-            maze.set(2, 1, 1);
-            maze.set(2, 4, 1);
-            maze.set(1, 4, 1);
-            maze.set(1, 5, 1);
-            maze.set(1, 6, 1);
-            maze.set(3, 7, 1);
-            maze.set(3, 6, 1);
-        }
-
-        if (type > 1)
-        {
-            maze.set(6, 7, 1);
-            maze.set(6, 6, 1);
-            maze.set(6, 5, 1);
-            maze.set(6, 4, 1);
-            maze.set(6, 3, 1);
-            maze.set(6, 2, 1);
-            maze.set(6, 1, 1);
-        }
-
-        if (type > 2)
-        {
-            maze.set(3, 0, 1);
-            maze.set(5, 0, 1);
-            maze.set(7, 0, 1);
-            maze.set(0, 2, 1);
-            maze.set(1, 2, 1);
-            maze.set(3, 2, 1);
-            maze.set(0, 3, 1);
-            maze.set(2, 3, 1);
-            maze.set(2, 5, 1);
-            maze.set(5, 5, 1);
-            maze.set(0, 7, 1);
-            maze.set(2, 7, 1);
-            maze.set(4, 6, 1);
-            maze.set(5, 6, 1);
-            maze.set(4, 7, 1);
-            maze.set(5, 7, 1);
-        }
-
-        var timeDiff = new Date() - startTime;
-        console.log("Maze shape: (" + maze.shape + ")");
-        console.log("Generation time: " + timeDiff + " ms");
-
-        return maze;
-    }
-
     function getOperations(maze, position)
     {
         if (maze.ndim !== position.length)
@@ -417,6 +348,246 @@ function()
         }
     }
 
+    function generateMaze(mazeDimensions, type)
+    {
+        var startTime = new Date();
+
+        // var maze = nj.ones(mazeDimensions, 'int8');
+        // maze.slice([1, -1], [1, -1], [1, -1]).assign(0, false);
+        var maze;
+
+        switch (type)
+        {
+            case 0:
+                maze = generateMazeOpen(mazeDimensions);
+                break;
+            case 1:
+                maze = generateMazeWall(mazeDimensions);
+                break;
+            case 2:
+                maze = generateMazeZigZag(mazeDimensions, 2);
+                break;
+            case 3:
+                maze = generateMazeObstacle(mazeDimensions, 5);
+                break;
+            case 4:
+                maze = generateMazeMultiPath(mazeDimensions, 4);
+                break;
+            case 5:
+                maze = generateMazeDeadEnd(mazeDimensions, 2);
+                break;
+            case 6:
+                maze = generateMazeBadPath(mazeDimensions);
+                break;
+            case 7:
+                maze = generateMazeRandom(mazeDimensions, 0.7);
+                break;
+            case 100:
+                maze = generateMazeTest(mazeDimensions);
+        }
+
+        var timeDiff = new Date() - startTime;
+        console.log("Maze shape: (" + maze.shape + ")");
+        console.log("Generation time: " + timeDiff + " ms");
+
+        return maze;
+    }
+
+    function generateMazeOpen(mazeDimensions)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        return maze;
+    }
+
+    function generateMazeWall(mazeDimensions)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        maze.slice([-2, mazeDimensions[0] - 1], [1, mazeDimensions[1]]).assign(1, false);
+
+        return maze;
+    }
+
+    function generateMazeZigZag(mazeDimensions, spacing)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        maze.slice([spacing,     mazeDimensions[0] - 1, (spacing+1)*2], [0, mazeDimensions[1] - 1]).assign(1, false);
+        maze.slice([spacing*2+1, mazeDimensions[0] - 1, (spacing+1)*2], [1, mazeDimensions[1]    ]).assign(1, false);
+
+        return maze;
+    }
+
+    function generateMazeObstacle(mazeDimensions, size)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        var obstacleDimensions = [];
+        for (var i = 0; i < mazeDimensions.length; ++i)
+        {
+            obstacleDimensions.push([size, -size]);
+        }
+
+        maze.slice.apply(maze, obstacleDimensions).assign(1, false);
+
+        return maze;
+    }
+
+    function generateMazeMultiPath(mazeDimensions, spacing)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        var obstacleDimensions = [
+            [spacing, -spacing],
+            [spacing, -1, (spacing+1)],
+        ];
+        for (var i = 2; i < mazeDimensions.length; ++i)
+        {
+            obstacleDimensions.push([spacing, -spacing]);
+        }
+
+        maze.slice.apply(maze, obstacleDimensions).assign(1, false);
+
+        return maze;
+    }
+
+    function generateMazeDeadEnd(mazeDimensions, spacing)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        maze.slice([spacing, mazeDimensions[0] - 1, (spacing+1)], [spacing, mazeDimensions[1]]).assign(1, false);
+
+        return maze;
+    }
+
+    function generateMazeBadPath(mazeDimensions)
+    {
+        var maze = nj.ones(mazeDimensions, 'int8');
+
+        // Down Path
+        var pathDimensions = [];
+        for (var i = 0; i < mazeDimensions.length - 1; ++i)
+        {
+            pathDimensions.push([0, 1]);
+        }
+        pathDimensions.push([0, mazeDimensions[1]]);
+        maze.slice.apply(maze, pathDimensions).assign(0, false);
+
+        // Empty Area
+        var pathDimensions = [];
+        for (var i = 0; i < mazeDimensions.length - 1; ++i)
+        {
+            pathDimensions.push([2, mazeDimensions[i]]);
+        }
+        pathDimensions.push([0, -2]);
+        maze.slice.apply(maze, pathDimensions).assign(0, false);
+
+        // Top and bottom spaces
+        pathDimensions = [];
+        for (var i = 0; i < mazeDimensions.length - 1; ++i)
+        {
+            pathDimensions.push([0, mazeDimensions[i]]);
+        }
+
+        // Top
+        pathDimensions.push([0, 1]);
+        maze.slice.apply(maze, pathDimensions).assign(0, false);
+
+        pathDimensions.pop();
+
+        // Bottom
+        pathDimensions.push([-1, mazeDimensions[mazeDimensions.length-1]]);
+        maze.slice.apply(maze, pathDimensions).assign(0, false);
+
+        return maze;
+    }
+
+    function generateMazeRandom(mazeDimensions, probability)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        // Math.seedrandom('hello.');
+        Math.seedrandom(Math.random());
+
+        var numBlocks = 1;
+        for (var i = 0; i < mazeDimensions.length; ++i)
+        {
+            numBlocks *= mazeDimensions[i];
+        }
+
+        for (var i = 1; i < numBlocks-1; ++i)
+        {
+            var coord = flattenToCoord(i, mazeDimensions);
+            coord.push(Math.random() < probability ? 0 : 1);
+
+            maze.set.apply(maze, coord);
+        }
+
+        return maze;
+    }
+
+    function generateMazeTest(mazeDimensions)
+    {
+        var maze = nj.zeros(mazeDimensions, 'int8');
+
+        var type = 1;
+
+        maze.set(3, 3, 1);
+        maze.set(3, 4, 1);
+        maze.set(4, 3, 1);
+        maze.set(4, 4, 1);
+
+        if (type > 0)
+        {
+            maze.set(4, 2, 1);
+            maze.set(4, 1, 1);
+            maze.set(4, 0, 1);
+            maze.set(0, 1, 1);
+            maze.set(1, 1, 1);
+            maze.set(2, 1, 1);
+            maze.set(2, 4, 1);
+            maze.set(1, 4, 1);
+            maze.set(1, 5, 1);
+            maze.set(1, 6, 1);
+            maze.set(3, 7, 1);
+            maze.set(3, 6, 1);
+        }
+
+        if (type > 1)
+        {
+            maze.set(6, 7, 1);
+            maze.set(6, 6, 1);
+            maze.set(6, 5, 1);
+            maze.set(6, 4, 1);
+            maze.set(6, 3, 1);
+            maze.set(6, 2, 1);
+            maze.set(6, 1, 1);
+        }
+
+        if (type > 2)
+        {
+            maze.set(3, 0, 1);
+            maze.set(5, 0, 1);
+            maze.set(7, 0, 1);
+            maze.set(0, 2, 1);
+            maze.set(1, 2, 1);
+            maze.set(3, 2, 1);
+            maze.set(0, 3, 1);
+            maze.set(2, 3, 1);
+            maze.set(2, 5, 1);
+            maze.set(5, 5, 1);
+            maze.set(0, 7, 1);
+            maze.set(2, 7, 1);
+            maze.set(4, 6, 1);
+            maze.set(5, 6, 1);
+            maze.set(4, 7, 1);
+            maze.set(5, 7, 1);
+        }
+
+        return maze;
+    }
+
     return {
         Statistics: Statistics,
         Operation: Operation,
@@ -430,10 +601,10 @@ function()
         getBestNode: getBestNode,
         getNodeDistance: getNodeDistance,
         printNodeList: printNodeList,
-        generateMaze: generateMaze,
         getOperations: getOperations,
         flattenToCoord: flattenToCoord,
         coordToFlatten: coordToFlatten,
         setMazeId: setMazeId,
+        generateMaze: generateMaze,
     }
 });

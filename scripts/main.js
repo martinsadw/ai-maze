@@ -8,12 +8,12 @@ function(ai)
         // var endPosition = [7, 7, 5, 2];
         // var results;
 
-        var mazeDimensions = [8, 8];
+        var mazeDimensions = [30, 30];
         var startPosition = [0, 0];
-        var endPosition = [7, 7];
+        var endPosition = [mazeDimensions[0] - 1, mazeDimensions[1] - 1];
         var results;
 
-        var maze = ai.generateMaze(mazeDimensions);
+        var maze = ai.generateMaze(mazeDimensions, 7);
         // results = ai.mazeBacktracking(maze, startPosition, endPosition);
         // console.log(results);
         // results = ai.mazeBreadthSearch(maze, startPosition, endPosition);
@@ -31,52 +31,13 @@ function(ai)
 
         if (maze.ndim == 2)
         {
-            var dimX = 50;
-            var dimY = 50;
+            var dimX = 20;
+            var dimY = 20;
 
             var borderFactor = 0.024;
 
             var padX = 0;
             var padY = 0;
-
-            var map = [];
-            for (var i = 0; i < mazeDimensions[0]; ++i)
-            {
-                map[i] = [];
-
-                for (var j = 0; j < mazeDimensions[1]; ++j)
-                {
-                    map[i][j] = {
-                        x: i,
-                        y: j,
-                        id: maze.get(i, j),
-                        cost: 10.24,
-                        heuristic: 15.65,
-                    };
-                }
-            }
-
-            map[0][0].id = 2;
-            map[7][7].id = 3;
-
-            mapPath = [
-                // { x: 0, y: 0, id: 4, },
-                { x: 1, y: 0, id: 4, },
-                { x: 2, y: 0, id: 4, },
-                { x: 3, y: 1, id: 4, },
-                { x: 2, y: 2, id: 4, },
-                { x: 1, y: 3, id: 4, },
-                { x: 0, y: 4, id: 4, },
-                { x: 0, y: 5, id: 4, },
-                { x: 0, y: 6, id: 4, },
-                { x: 1, y: 7, id: 4, },
-                { x: 2, y: 6, id: 4, },
-                { x: 3, y: 5, id: 4, },
-                { x: 4, y: 5, id: 4, },
-                { x: 5, y: 5, id: 4, },
-                { x: 6, y: 6, id: 4, },
-                // { x: 7, y: 7, id: 4, },
-            ]
 
             function getFillColor(d)
             {
@@ -117,10 +78,10 @@ function(ai)
 
             var grid = d3.select("#maze")
                 .append("svg")
-                .attr("width", "510px")
-                .attr("height", "510px");
+                .attr("width", (mazeDimensions[0] * (dimX + padX) + 10) + "px")
+                .attr("height", (mazeDimensions[1] * (dimY + padY) + 10) + "px");
 
-            var iterator = ai.mazeIDAStarIt(maze, startPosition, endPosition);
+            var iterator = ai.mazeAStarIt(maze, startPosition, endPosition);
 
             (function MazeIterate()
             {
@@ -187,7 +148,7 @@ function(ai)
                     .style("stroke-width", dimX * borderFactor)
 
                 if (!resultsIt.done)
-                    setTimeout(MazeIterate, 1);
+                    setTimeout(MazeIterate, 50);
             })();
 
             // row.selectAll(".textA")
