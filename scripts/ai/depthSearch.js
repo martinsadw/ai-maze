@@ -38,10 +38,22 @@ function(mazeLib)
             {
                 var flatten = mazeLib.coordToFlatten(operations[i].coord, maze.shape);
 
-                var closedIndex = closed.find(node => node.flatten == flatten);
-                var openIndex = open.find(node => node.flatten == flatten);
+                var closedElement = closed.find(node => node.flatten == flatten);
+                var openElement = open.find(node => node.flatten == flatten);
 
-                if (!closedIndex && !openIndex) // Checks if the position isn't in one of the lists
+                if (closedElement)
+                {
+                    continue;
+                }
+                else if (openElement)
+                {
+                    if (openElement.cost > currentPosition.cost + operations[i].cost)
+                    {
+                        openElement.parent = (closed.length-1);
+                        openElement.cost = currentPosition.cost + operations[i].cost;
+                    }
+                }
+                else
                 {
                     results._numberOfBranchs++;
                     open.push(new mazeLib.MazeNode(flatten, (closed.length-1), currentPosition.cost + operations[i].cost));
@@ -134,10 +146,22 @@ function(mazeLib)
             {
                 var flatten = mazeLib.coordToFlatten(operations[i].coord, maze.shape);
 
-                var closedIndex = closed.find(node => node.flatten == flatten);
-                var openIndex = open.find(node => node.flatten == flatten);
+                var closedElement = closed.find(node => node.flatten == flatten);
+                var openElement = open.find(node => node.flatten == flatten);
 
-                if (!closedIndex && !openIndex) // Checks if the position isn't in one of the lists
+                if (closedElement)
+                {
+                    continue;
+                }
+                else if (openElement)
+                {
+                    if (openElement.cost > currentPosition.cost + operations[i].cost)
+                    {
+                        openElement.parent = (closed.length-1);
+                        openElement.cost = currentPosition.cost + operations[i].cost;
+                    }
+                }
+                else
                 {
                     results._numberOfBranchs++;
                     mazeLib.setMazeId(results.map, operations[i].coord, 5);

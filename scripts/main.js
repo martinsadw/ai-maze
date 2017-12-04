@@ -8,7 +8,7 @@ function(ai)
         // var endPosition = [7, 7, 5, 2];
         // var results;
 
-        var mazeDimensions = [30, 30];
+        var mazeDimensions = [10, 10];
         var startPosition = [0, 0];
         var endPosition = [mazeDimensions[0] - 1, mazeDimensions[1] - 1];
         var results;
@@ -28,6 +28,21 @@ function(ai)
         // console.log(results);
         // results = ai.mazeIDAStar(maze, startPosition, endPosition);
         // console.log(results);
+
+        console.log("Backtracking");
+        console.log(ai.mazeBacktracking(maze, startPosition, endPosition));
+        console.log("Breadth Search");
+        console.log(ai.mazeBreadthSearch(maze, startPosition, endPosition));
+        console.log("Depth Search");
+        console.log(ai.mazeDepthSearch(maze, startPosition, endPosition));
+        console.log("Ordered Search");
+        console.log(ai.mazeOrderedSearch(maze, startPosition, endPosition));
+        console.log("Greedy Search");
+        console.log(ai.mazeGreedySearch(maze, startPosition, endPosition));
+        console.log("A*");
+        console.log(ai.mazeAStar(maze, startPosition, endPosition));
+        console.log("IDA*");
+        console.log(ai.mazeIDAStar(maze, startPosition, endPosition));
 
         if (maze.ndim == 2)
         {
@@ -81,7 +96,7 @@ function(ai)
                 .attr("width", (mazeDimensions[0] * (dimX + padX) + 10) + "px")
                 .attr("height", (mazeDimensions[1] * (dimY + padY) + 10) + "px");
 
-            var iterator = ai.mazeAStarIt(maze, startPosition, endPosition);
+            var iterator = ai.mazeIDAStarIt(maze, startPosition, endPosition);
 
             (function MazeIterate()
             {
@@ -148,7 +163,7 @@ function(ai)
                     .style("stroke-width", dimX * borderFactor)
 
                 if (!resultsIt.done)
-                    setTimeout(MazeIterate, 50);
+                    setTimeout(MazeIterate, 1);
             })();
 
             // row.selectAll(".textA")

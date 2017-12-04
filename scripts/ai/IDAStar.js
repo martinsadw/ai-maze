@@ -136,7 +136,7 @@ function(mazeLib)
                     currentRecursion = stack.pop();
                     var visited = results.path.pop();
                     mazeLib.setMazeId(results.map, [visited.x, visited.y], 5);
-                    yield results;
+                    // yield results;
 
                     continue;
                 }

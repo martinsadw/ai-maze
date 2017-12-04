@@ -368,10 +368,12 @@ function()
                 maze = generateMazeZigZag(mazeDimensions, 2);
                 break;
             case 3:
-                maze = generateMazeObstacle(mazeDimensions, 5);
+                // maze = generateMazeObstacle(mazeDimensions, 5);
+                maze = generateMazeObstacle(mazeDimensions, 2);
                 break;
             case 4:
-                maze = generateMazeMultiPath(mazeDimensions, 4);
+                // maze = generateMazeMultiPath(mazeDimensions, 4);
+                maze = generateMazeMultiPath(mazeDimensions, 2);
                 break;
             case 5:
                 maze = generateMazeDeadEnd(mazeDimensions, 2);
