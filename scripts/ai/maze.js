@@ -109,6 +109,8 @@ function()
         this.executionTime = 0;
 
         this.find = false;
+
+        this.map = [];
     }
 
     function Operation(coord, cost)
